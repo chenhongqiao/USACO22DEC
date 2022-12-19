@@ -1,20 +1,19 @@
 #!/bin/zsh
 
 name=($1)
-div=($2)
-prob_name=($3)
+prob_name=($2)
 
-if [ -z $name ] || [ -z $div ] || [ -z $prob_name ]
+if [ -z $name ] || [ -z $prob_name ]
 then
 	echo "Error: not all parameters are supplied."
 	exit -1
 fi
 	
 
-if [ ! -d $div/$name ] 
+if [ ! -d $name ] 
 then
-	mkdir -p $div/$name
-	src_path=($div/$name/$name.cpp)
+	mkdir -p $name
+	src_path=($name/$name.cpp)
 	touch $src_path
 	code $src_path
 	echo "// $prob_name" > $src_path
