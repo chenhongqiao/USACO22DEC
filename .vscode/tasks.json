@@ -1,0 +1,50 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "clang",
+            "type": "cppbuild",
+            "command": "clang++",
+            "args": [
+                "-Wall",
+                "-std=gnu++17",
+                "-O0",
+                "-stdlib=libc++",
+                "-fno-inline-functions",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "clang-o2",
+            "type": "cppbuild",
+            "command": "clang++",
+            "args": [
+                "-Wall",
+                "-std=c++17",
+                "-O2",
+                "-stdlib=libc++",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}-o2"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+    ]
+}
