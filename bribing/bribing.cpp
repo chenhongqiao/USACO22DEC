@@ -9,6 +9,10 @@ struct cow
     int p, c, x;
 };
 int dp[2005][2005];
+bool cmp(cow a, cow b)
+{
+    return a.x > b.x;
+}
 int main()
 {
     cin >> n >> a >> b;
@@ -17,27 +21,15 @@ int main()
     {
         cin >> p >> c >> x;
     }
-    for (int i = 1; i <= n; i++)
+    sort(f.begin(), f.end(), cmp);
+    for (auto [p, c, x] : f)
     {
-        for (int j = a; j >= 0; j--)
+        for (int j = a; j >= 0 && c - j <= b / x; j--)
         {
-            for (int k = b; k >= 0; k--)
+            for (int k = b; k >= 0 && c - j <= k / x; k--)
             {
-                int mx = 0;
-                auto [p, c, x] = f[i - 1];
-                for (int l = k; l >= 0; l--)
-                {
-                    if (l / x - c > 0)
-                    {
-                        continue;
-                    }
-                    if (j - c + l / x < 0)
-                    {
-                        break;
-                    }
-                    mx = max(mx, dp[j - c + l / x][k - l] + p);
-                }
-                dp[j][k] = max(dp[j][k], mx);
+                int l = min(k, c * x);
+                dp[j][k] = max(dp[j][k], dp[j - c + l / x][k - l] + p);
             }
         }
     }
