@@ -3,29 +3,21 @@
     "configurations": [
         {
             "name": "C++: Debug",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [],
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": true,
-            "MIMode": "lldb",
             "preLaunchTask": "clang",
-            "targetArchitecture": "arm64"
+            "relativePathBase": "${fileDirname}"
         },
         {
             "name": "C++: Debug (O2)",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}-o2",
             "args": [],
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": true,
-            "MIMode": "lldb",
             "preLaunchTask": "clang-o2",
-            "targetArchitecture": "arm64"
+            "relativePathBase": "${fileDirname}"
         },
         {
             "name": "Python: Debug",
