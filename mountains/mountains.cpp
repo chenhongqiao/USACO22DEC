@@ -1,59 +1,83 @@
 // Mountains
 #include <iostream>
 #include <vector>
+#include <map>
+#define lg(a, b) ((long long)a.first * b.second > (long long)a.second * b.first)
+#define lge(a, b) ((long long)a.first * b.second >= (long long)a.second * b.first)
 using namespace std;
-int n, q;
-int cnt[2005];
+struct mountain
+{
+    int h;
+    map<int, pair<int, int>> mp;
+};
 int main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n, q;
     cin >> n;
-    vector<int> h(n);
-    for (auto &a : h)
+    vector<mountain> m(n);
+    for (auto &[h, mp] : m)
     {
-        cin >> a;
+        cin >> h;
     }
-    for (int j = 0; j < n; j++)
+    int ans = 0;
+    pair<int, int> lst;
+    for (int i = 0; i < n; i++)
     {
-        int tmp = 0;
-        double mins = 2000000000;
-        for (int k = j - 1; k >= 0; k--)
+        auto &[h, mp] = m[i];
+        for (int j = i - 1; j >= 0; j--)
         {
-            double s = (double)(h[k] - h[j]) / (k - j);
-            if (s <= mins)
+            auto slp = make_pair(m[j].h - h, i - j);
+            if (mp.empty() || lge(slp, lst))
             {
-                mins = s;
-                tmp++;
+                mp.insert({j, slp});
+                lst = slp;
+                ans++;
             }
         }
-        cnt[j] = tmp;
     }
     cin >> q;
-    for (int i = 0; i < q; i++)
+    while (q--)
     {
         int x, y;
         cin >> x >> y;
-        h[x - 1] += y;
-        int ans = 0;
-        for (int j = x - 1; j < n; j++)
+        x--;
+        auto &[h, mp] = m[x];
+        h += y;
+
+        for (int i = x + 1; i < n; i++)
         {
-            int tmp = 0;
-            double mins = 2000000000;
-            for (int k = j - 1; k >= 0; k--)
+            auto &[kh, kmp] = m[i];
+            auto end = kmp.upper_bound(x);
+            auto beg = end;
+            auto ns = make_pair(h - kh, i - x);
+            if (end == kmp.end() || lge(ns, end->second))
             {
-                double s = (double)(h[k] - h[j]) / (k - j);
-                if (s <= mins)
+                while (beg != kmp.begin() && lg(ns, prev(beg)->second))
                 {
-                    mins = s;
-                    tmp++;
+                    beg--;
+                    ans--;
                 }
+                kmp.erase(beg, end);
+                ans++;
+                kmp.insert({x, ns});
             }
-            cnt[j] = tmp;
         }
-        for (int j = 0; j < n; j++)
+        ans -= mp.size();
+        mp.clear();
+        pair<int, int> lst;
+        for (int j = x - 1; j >= 0; j--)
         {
-            ans += cnt[j];
+            auto slp = make_pair(m[j].h - h, x - j);
+            if (mp.empty() || lge(slp, lst))
+            {
+                mp.insert({j, slp});
+                lst = slp;
+                ans++;
+            }
         }
-        cout << ans << endl;
+        cout << ans << "\n";
     }
     return 0;
 }
